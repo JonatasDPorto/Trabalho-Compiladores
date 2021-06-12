@@ -17,7 +17,8 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Value> {
     public Value visitAssignment(LabeledExprParser.AssignmentContext ctx) {
         String id = ctx.ID().getText();
         Value value = this.visit(ctx.expr());
-        return memory.put(id, value);
+        memory.put(id, value);
+        return value;
     }
 
     @Override
@@ -170,27 +171,24 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Value> {
 
     @Override
     public Value visitFor_stat(LabeledExprParser.For_statContext ctx) {
-
-        // while (ctx.assignment().expr() != ctx.expr()) {
-        // System.out.println(start);
-
-        // ctx.assignment().expr().equals(ctx.expr());
-
-        // }
-
-        int start = this.visit(ctx.expr(0)).asDouble().intValue();
+        int start = this.visit(ctx.assignment()).asDouble().intValue();
         System.out.println(start);
-        int stop = this.visit(ctx.expr(1)).asDouble().intValue();
+        Value stop = this.visit(ctx.expr());
         System.out.println(stop);
-        for (int i = start; i <= stop; i++) {
-            // scope.assign(ctx.ID().getText(), new Value(i));
-            // Value returnValue = this.visit(ctx.stat_block());
+        // for (int i = start; stop.asBoolean(); i++) {
+        // this.visit(ctx.stat_block());
+        // stop = this.visit(ctx.expr());
+        // }
+        while (stop.asBoolean()) {
+
             // evaluate the code block
             this.visit(ctx.stat_block());
 
-            // if (returnValue != Value.VOID) {
-            // return returnValue;
-            // }
+            // evaluate the expression
+            stop = this.visit(ctx.expr());
+
+            // Value = memory[ctx.assignment().ID().getText()].asDouble() + 1;
+
         }
 
         return Value.VOID;

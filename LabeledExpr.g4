@@ -46,8 +46,7 @@ stat_block: OBRACE block CBRACE | stat;
 // while_stat: WHILE condition_block; PORQUE N FUNCIONA
 while_stat: WHILE OPAR expr CPAR stat_block;
 
-for_stat:
-	FOR OPAR ID ASSIGN expr SCOL ID LT expr CPAR stat_block;
+for_stat: FOR OPAR assignment expr CPAR stat_block;
 
 boolean_literal: TRUE | FALSE;
 
