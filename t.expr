@@ -2,7 +2,7 @@ int n;
 string i;
 float h;
 boolean p;
-int x, int y; 
+int x, y;
 
 n = 9;
 
@@ -29,12 +29,28 @@ println x + y;
 
 println x + h;
 
+int j, f; //nova variavel
 
-int j;
 j = 4;
+
+k = 3;
 
 for(t = 1; t < 10) {
     println j;
+    while (l > 0) {
+
+  /* expressions can be surrounded by parenthesis, of course */
+  if (l % 2 == 0) {
+    println l + " -> even";
+  }
+  else {
+    println l + " -> odd";
+  }
+
+  l = l - 1;
+}
+    println k;
+
 }
 
 l=9;
@@ -51,3 +67,18 @@ while (l > 0) {
 
   l = l - 1;
 }
+
+const int abc = 50;
+
+string xpto;
+xpto = "jaca";
+println(xpto + "raca");
+
+
+array int cab[3];
+cab[0] = 22;
+cab[1] = 2514;
+cab[2] = 42;
+println cab[0];
+println cab[1];
+println cab[2];

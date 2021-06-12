@@ -12,12 +12,60 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Value> {
     // store variables (there's only one global scope!)
     private Map<String, Value> memory = new HashMap<String, Value>();
 
+    @Override
+    public Value visitIDlistaAtom(LabeledExprParser.IDlistaAtomContext ctx) {
+        return this.visit(ctx.id_lista());
+    }
+
+    @Override
+    public Value visitId_lista(LabeledExprParser.Id_listaContext ctx) {
+        int position = Integer.parseInt(ctx.IntegerLiteral().getText());
+        String id = ctx.ID().getText();
+        Value value = null;
+        if (memory.containsKey(id)) {
+            value = ((Value[]) memory.get(id).value)[position];
+        }
+        return value;
+    }
+
+    @Override
+    public Value visitListaType(LabeledExprParser.ListaTypeContext ctx) {
+        String id = ctx.ID().getText();
+        int tamanho = Integer.parseInt(ctx.IntegerLiteral().getText());
+        Value[] array = new Value[tamanho];
+        memory.put(id, new Value(array));
+
+        return new Value(array);
+    }
+
+    @Override
+    public Value visitConstType(LabeledExprParser.ConstTypeContext ctx) {
+        String id = ctx.ID().getText();
+        Value value = this.visit(ctx.expr());
+        if (!memory.containsKey(id)) {
+            memory.put(id, value);
+            return value;
+        }
+        System.out.println("Deu ruim");
+        return value;
+
+    }
+
     // assignment/id overrides
     @Override
     public Value visitAssignment(LabeledExprParser.AssignmentContext ctx) {
-        String id = ctx.ID().getText();
         Value value = this.visit(ctx.expr());
-        memory.put(id, value);
+        if (ctx.ID() != null) {
+            String id = ctx.ID().getText();
+            memory.put(id, value);
+            return value;
+        }
+        int position = Integer.parseInt(ctx.id_lista().IntegerLiteral().getText());
+        String id = ctx.id_lista().ID().getText();
+        Value valueMemory = this.visit(ctx.id_lista());
+
+        ((Value[]) memory.get(id).value)[position] = value;
+
         return value;
     }
 
@@ -187,7 +235,8 @@ public class EvalVisitor extends LabeledExprBaseVisitor<Value> {
             // evaluate the expression
             stop = this.visit(ctx.expr());
 
-            // Value = memory[ctx.assignment().ID().getText()].asDouble() + 1;
+            memory.replace(ctx.assignment().ID().getText(),
+                    new Value(memory.get(ctx.assignment().ID().getText()).asDouble() + 1));
 
         }
 

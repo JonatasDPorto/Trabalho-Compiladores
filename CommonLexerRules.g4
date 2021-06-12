@@ -1,5 +1,9 @@
 lexer grammar CommonLexerRules;
 
+CONST: 'const';
+
+ARRAY: 'array';
+
 STRING: 'string';
 INT: 'int';
 FLOAT: 'float';
@@ -21,6 +25,8 @@ OPAR: '(';
 CPAR: ')';
 OBRACE: '{';
 CBRACE: '}';
+OBRACKET: '[';
+CBRACKET: ']';
 
 MULT: '*';
 DIV: '/';
@@ -47,5 +53,7 @@ IntegerLiteral: [0-9]+;
 FloatLiteral: [0-9]+ '.' [0-9]* | '.' [0-9]+;
 StringLiteral: '"' (~["\r\n] | '""')* '"';
 
-Comment: '/*' .*? '*/' -> skip;
+Comment
+ : ( '//' ~[\r\n]* | '/*' .*? '*/' ) -> skip
+ ;
 Space: [ \t\r\n] -> skip;

@@ -7,16 +7,18 @@ parse: block EOF;
 block: stat*;
 
 stat:
-	var
+	const_type 
+	|var
+	| lista
 	| assignment
 	| if_stat
 	| while_stat
 	| for_stat
 	| println;
 
-//int x, int y; n = 9
-var: type ID ( COMMA type ID)* SCOL;
-// var: type expr SCOL | type expr SCOL ( COMMA type expr SCOL)*; var_List: var ( COMMA var)*;
+var: type ID ( COMMA ID)* SCOL;
+
+const_type: CONST type ID ASSIGN expr SCOL #ConstType;
 
 type:
 	STRING		# TypeStr
@@ -25,14 +27,14 @@ type:
 	| BOOLEAN	# TypeBool;
 
 // lista: type expr ( COMMA expr)*;
+lista: ARRAY type ID OBRACKET IntegerLiteral CBRACKET SCOL # ListaType;
 
-// concat: StringLiteral (PLUS expr)* SCOL;
-
-// id_list: ID ( COMMA ID)*;
+id_lista: ID OBRACKET IntegerLiteral CBRACKET;
 
 expr_list: expr (COMMA expr)*;
 
-assignment: ID ASSIGN expr SCOL;
+assignment: ID ASSIGN expr SCOL
+	| id_lista ASSIGN expr SCOL;
 
 if_stat:
 	IF condition_block (ELSE IF condition_block)* (
@@ -43,7 +45,6 @@ condition_block: expr stat_block;
 
 stat_block: OBRACE block CBRACE | stat;
 
-// while_stat: WHILE condition_block; PORQUE N FUNCIONA
 while_stat: WHILE OPAR expr CPAR stat_block;
 
 for_stat: FOR OPAR assignment expr CPAR stat_block;
@@ -67,6 +68,8 @@ atom:
 	OPAR expr CPAR						# parExpr
 	| (IntegerLiteral | FloatLiteral)	# numberAtom
 	| boolean_literal					# booleanAtom
+	| id_lista                          # IDlistaAtom
 	| ID								# idAtom
 	| StringLiteral						# stringAtom
-	| NULL								# nullAtom;
+	| NULL								# nullAtom
+	;

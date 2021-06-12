@@ -34,6 +34,13 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVar(LabeledExprParser.VarContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code ConstType}
+	 * labeled alternative in {@link LabeledExprParser#const_type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConstType(LabeledExprParser.ConstTypeContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code TypeStr}
 	 * labeled alternative in {@link LabeledExprParser#type}.
 	 * @param ctx the parse tree
@@ -61,6 +68,19 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTypeBool(LabeledExprParser.TypeBoolContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ListaType}
+	 * labeled alternative in {@link LabeledExprParser#lista}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitListaType(LabeledExprParser.ListaTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LabeledExprParser#id_lista}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitId_lista(LabeledExprParser.Id_listaContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LabeledExprParser#expr_list}.
 	 * @param ctx the parse tree
@@ -199,6 +219,13 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBooleanAtom(LabeledExprParser.BooleanAtomContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code IDlistaAtom}
+	 * labeled alternative in {@link LabeledExprParser#atom}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIDlistaAtom(LabeledExprParser.IDlistaAtomContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code idAtom}
 	 * labeled alternative in {@link LabeledExprParser#atom}.
